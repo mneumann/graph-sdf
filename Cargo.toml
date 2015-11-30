@@ -1,0 +1,12 @@
+[package]
+name = "graph_sgf"
+version = "0.0.1"
+authors = ["Michael Neumann <mneumann@ntecs.de>"]
+license = "MIT"
+repository = "https://github.com/mneumann/graph-sdf"
+description = "A Simple Graph Format for directed, weighted Graphs"
+keywords = ["graph", "io"]
+
+[dependencies]
+
+petgraph = "0.1"
