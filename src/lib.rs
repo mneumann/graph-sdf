@@ -92,18 +92,23 @@ pub fn read_sgf<R, V, NodeWt, EdgeWt, I>(rd: &mut R, visitor: &mut V)
             };
             visitor.node(node_id, node_weight);
 
-            let edge_s = i.next().unwrap();
-            for es in edge_s.split(',') {
-                let mut it = es.splitn(2, ":");
-                let target_id: usize = it.next()
-                                         .unwrap()
-                                         .parse()
-                                         .unwrap();
+            if let Some(edge_s) = i.next() {
+                for es in edge_s.split(',') {
+                    let es = es.trim();
+                    if es.is_empty() {
+                        continue;
+                    }
+                    let mut it = es.splitn(2, ":");
+                    let target_id: usize = it.next()
+                                             .unwrap()
+                                             .parse()
+                                             .unwrap();
 
-                let edge_weight: Option<EdgeWt> = it.next()
-                                                    .map(|s| s.parse::<EdgeWt>().unwrap());
+                    let edge_weight: Option<EdgeWt> = it.next()
+                                                        .map(|s| s.parse::<EdgeWt>().unwrap());
 
-                visitor.edge(node_id, target_id, edge_weight);
+                    visitor.edge(node_id, target_id, edge_weight);
+                }
             }
 
             visitor.endnode(node_id);

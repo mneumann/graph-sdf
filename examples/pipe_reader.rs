@@ -45,7 +45,7 @@ impl Visitor<f32, f32> for PipeReader {
 }
 
 fn main() {
-    let f = File::open("er_100_0_1.sgf").unwrap();
+    let f = File::open("path_30.sgf").unwrap();
     let mut f = BufReader::new(f);
     let mut pipe_reader = PipeReader::new();
     read_sgf(&mut f, &mut pipe_reader);
