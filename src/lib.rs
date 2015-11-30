@@ -7,6 +7,19 @@ use std::io::BufRead;
 use petgraph::graph::NodeIndex;
 use petgraph::{Directed, Graph};
 
+#[derive(Debug, Default, Clone, Copy)]
+pub struct Unweighted;
+impl FromStr for Unweighted {
+type Err = &'static str;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        if s.is_empty() {
+            Ok(Unweighted)
+        } else {
+            Err("Invalid Unweighted string")
+        }
+    }
+}
+
 pub trait Visitor<NodeWt, EdgeWt> {
     fn init(&mut self, num_nodes: usize, num_edges: usize);
     fn node(&mut self, node_id: usize, node_weight: Option<NodeWt>);
