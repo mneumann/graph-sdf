@@ -21,7 +21,7 @@ type Err = &'static str;
 }
 
 pub trait Visitor<NodeWt, EdgeWt> {
-    fn init(&mut self, num_nodes: usize, num_edges: usize);
+    fn init(&mut self, num_nodes: usize, num_edges: Option<usize>);
     fn node(&mut self, node_id: usize, node_weight: Option<NodeWt>);
     fn endnode(&mut self, _node_id: usize) {
     }
@@ -35,7 +35,7 @@ pub fn read_sgf<R, V, NodeWt, EdgeWt, I>(rd: &mut R, visitor: &mut V)
           EdgeWt: FromStr<Err = I>,
           I: Debug
 {
-    let mut meta: Option<(usize, usize)> = None;
+    let mut meta: Option<(usize, Option<usize>)> = None;
 
     for line in rd.lines() {
         let line = line.unwrap();
@@ -62,17 +62,11 @@ pub fn read_sgf<R, V, NodeWt, EdgeWt, I>(rd: &mut R, visitor: &mut V)
                     ns.parse().unwrap()
                 }
                 _ => {
-                    panic!("Invalid format");
+                    panic!("Missing number of nodes");
                 }
             };
-            let num_edges: usize = match m.next() {
-                Some(ns) => {
-                    ns.parse().unwrap()
-                }
-                _ => {
-                    panic!("Invalid format");
-                }
-            };
+            // num_edges is optional
+            let num_edges: Option<usize> = m.next().map(|ns| ns.parse().unwrap());
 
             meta = Some((num_nodes, num_edges));
 
@@ -137,7 +131,7 @@ where NodeWt: Default+FromStr<Err = I>,
 }
 
 impl<NodeWt:Default, EdgeWt:Default> Visitor<NodeWt, EdgeWt> for PetgraphReader<NodeWt, EdgeWt> {
-    fn init(&mut self, num_nodes: usize, _num_edges: usize) {
+    fn init(&mut self, num_nodes: usize, _num_edges: Option<usize>) {
         for _ in 0..num_nodes {
             self.graph.add_node(NodeWt::default());
         }

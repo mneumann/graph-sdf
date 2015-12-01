@@ -6,8 +6,8 @@ use std::fs::File;
 struct DummyReader;
 
 impl Visitor<f32, f32> for DummyReader {
-    fn init(&mut self, num_nodes: usize, num_edges: usize) {
-        println!("num_nodes: {}, num_edges: {}", num_nodes, num_edges);
+    fn init(&mut self, num_nodes: usize, num_edges: Option<usize>) {
+        println!("num_nodes: {}, num_edges: {:?}", num_nodes, num_edges);
     }
     fn node(&mut self, node_id: usize, node_weight: Option<f32>) {
         println!("node id: {} weight: {:?}", node_id, node_weight);

@@ -15,8 +15,12 @@ impl PipeReader {
 }
 
 impl Visitor<f32, f32> for PipeReader {
-    fn init(&mut self, num_nodes: usize, num_edges: usize) {
-        println!("SGF/1 {} {}", num_nodes, num_edges);
+    fn init(&mut self, num_nodes: usize, num_edges: Option<usize>) {
+        print!("SGF/1 {}", num_nodes);
+        if let Some(n) = num_edges {
+            print!(" {}", n);
+        }
+        println!("");
     }
     fn node(&mut self, node_id: usize, node_weight: Option<f32>) {
         print!("{}", node_id);
