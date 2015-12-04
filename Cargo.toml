@@ -9,4 +9,4 @@ keywords = ["graph", "io"]
 
 [dependencies]
 
-petgraph = "0.1"
+petgraph = "0.2"
